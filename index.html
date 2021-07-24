@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+</head>
+<body style="text-align: center;">
+    <canvas id="draw" style="border: 3px; border-color: black; background-color: whitesmoke; height: 600px; width: 1000px;">
+
+    </canvas>
+
+    <input type="color" id="color">
+    <input type="number" id="width">
+
+    <script>
+        canvas = document.getElementById("draw");
+        ctx = canvas.getContext("2d");
+        var mouseStatus = "empty";
+
+        var lastx = 0;
+        var lasty = 0;
+
+        var x = 0;
+        var y = 0;
+
+
+        canvas.addEventListener("mousedown", my_mousedown)
+        function my_mousedown() {
+            mouseStatus = "mousedown";
+        }
+        canvas.addEventListener("mouseup", my_mouseup)
+        function my_mouseup() {
+            mouseStatus = "mouseup";
+        }
+        canvas.addEventListener("mousemove", my_mousemove)
+        function my_mousemove(e) {
+            if(mouseStatus == "mousedown") {
+                
+                var color = document.getElementById("color").value;
+                var width = document.getElementById("width").value;
+
+                x = e.clientX - canvas.offsetLeft;
+                y = e.clientY - canvas.offsetTop;
+
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = width;
+                ctx.arc(x - 100, y - 50, width, 0, 360);
+                ctx.stroke();
+            }
+
+            lastx = x;
+            lasty = y;
+        }
+        canvas.addEventListener("touch", my_mousetouch)
+        function my_mousemtouch(e) {
+            if(mouseStatus == "mousedown") {
+                
+                var color = document.getElementById("color").value;
+                var width = document.getElementById("width").value;
+
+                x = e.touches[0].clientX - canvas.offsetLeft;
+                y = e.touches[0].clientY - canvas.offsetTop;
+
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = width;
+                ctx.arc(x - 100, y - 50, width, 0, 360);
+                ctx.stroke();
+            }
+
+            lastx = x;
+            lasty = y;
+        }
+        canvas.addEventListener("mouseleave", my_mouseleave)
+        function my_mouseleave() {
+            mouseStatus = "mouseleave";
+        }
+    </script>
+</body>
+</html>
